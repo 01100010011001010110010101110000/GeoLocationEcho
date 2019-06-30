@@ -24,7 +24,4 @@ spec:
             envFrom:
             - secretRef:
                 name: geoip-account-secrets
-            volumeMounts:
-            - mountPath: /opt/geoip/databases
-              name: geoip-database-volume
           restartPolicy: OnFailure
