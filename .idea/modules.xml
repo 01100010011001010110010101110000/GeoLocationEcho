@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/GeoLocationEcho.iml" filepath="$PROJECT_DIR$/.idea/GeoLocationEcho.iml" />
       <module fileurl="file://$PROJECT_DIR$/../MaxMindPuller/.idea/MaxMindPuller.iml" filepath="$PROJECT_DIR$/../MaxMindPuller/.idea/MaxMindPuller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../redeploy/.idea/redeploy.iml" filepath="$PROJECT_DIR$/../redeploy/.idea/redeploy.iml" />
     </modules>
   </component>
 </project>

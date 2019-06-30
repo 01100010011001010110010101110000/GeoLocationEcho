@@ -13,6 +13,10 @@ databasePullerImage:
   repository: utmachine/maxmindpuller
   tag: latest
 
+redeployerImage:
+  repository: utmachine/redeployer
+  tag: latest
+
 
 geoip_config_file: "/opt/geoip/GeoIP.conf"
 geoip_account:

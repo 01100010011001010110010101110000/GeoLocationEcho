@@ -9,12 +9,18 @@ spec:
       template:
         spec:
           containers:
-          - name: maxmind-database-puller
-            image: {{ .Values.databasePullerImage.repository }}:{{ .Values.databasePullerImage.tag }}
+          - name: redeployer
+            image: {{ .Values.redeployerImage.repository }}:{{ .Values.redeployerImage.tag }}
             imagePullPolicy: IfNotPresent
             env:
               - name: GEOIP_PRODUCT_IDS
                 value: {{ .Values.geoip_account.product_ids }}
+              - name: DEPLOYMENT
+                value: {{ include "GeoLocationEcho.fullname" . }}
+              - name: NAMESPACE
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
             envFrom:
             - secretRef:
                 name: geoip-account-secrets
@@ -22,11 +28,3 @@ spec:
             - mountPath: /opt/geoip/databases
               name: geoip-database-volume
           restartPolicy: OnFailure
-          securityContext:
-            runAsGroup: 0
-            runAsUser: 0
-          volumes:
-          - name: geoip-database-volume
-            hostPath:
-              path: /tmp/shared
-              type: DirectoryOrCreate

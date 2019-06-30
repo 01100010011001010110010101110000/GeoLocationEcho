@@ -9,7 +9,7 @@ ADD config.py ${APP_ROOT}
 ADD app.py ${APP_ROOT}
 RUN pip install -r "${APP_ROOT}/requirements.txt"
 
-RUN addgroup -S echo --gid 101 && adduser -S -G echo echo
+RUN addgroup -S echo && adduser -S -G echo echo
 RUN chown -R echo:echo ${APP_ROOT}
 USER echo
 
