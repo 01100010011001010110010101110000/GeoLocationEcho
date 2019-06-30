@@ -1,0 +1,32 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "30 18 * * 2"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: maxmind-database-puller
+            image: {{ .Values.databasePullerImage.repository }}:{{ .Values.databasePullerImage.tag }}
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: GEOIP_PRODUCT_IDS
+                value: {{ .Values.geoip_account.product_ids }}
+            envFrom:
+            - secretRef:
+                name: geoip-account-secrets
+            volumeMounts:
+            - mountPath: /opt/geoip/databases
+              name: geoip-database-volume
+          restartPolicy: OnFailure
+          securityContext:
+            runAsGroup: 0
+            runAsUser: 0
+          volumes:
+          - name: geoip-database-volume
+            hostPath:
+              path: /tmp/shared
+              type: DirectoryOrCreate

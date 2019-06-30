@@ -1,4 +1,3 @@
-import ipaddress
 import os
 
 from flask import Flask
@@ -7,38 +6,37 @@ from flask import jsonify
 
 import geoip2.database
 import geoip2.errors
+import maxminddb.errors
 
 app = Flask(__name__)
-
-reader = geoip2.database.Reader(f"{os.environ.get('APP_ROOT', './')}databases/GeoLite2-City.mmdb")
 
 
 @app.route('/', methods=['GET'])
 def ip_echo():
-    try:
-        response = reader.city(request.remote_addr)
-        return jsonify(geoip_response_to_dict(response)), 200
-    except geoip2.errors.AddressNotFoundError:
-        return jsonify({'error': 'IP not in database'}), 404
+    return handle_ip_query(request.remote_addr, reader)
 
 
 @app.route('/api/geoip', methods=['GET'])
 def ip_reply():
-    try:
-        ip = request.args.get('ip')
-        ipaddress.ip_address(ip)
-        response = reader.city(ip)
-        return jsonify(geoip_response_to_dict(response)), 200
-    except ValueError:
-        return jsonify({'error': f"{ip} is not a valid IP address"}), 400
-    except geoip2.errors.AddressNotFoundError:
-        return jsonify({'error': 'IP not in database'}), 404
+    return handle_ip_query(request.args.get('ip', ""), reader)
 
 
 @app.route('/status', methods=['GET'])
 def status_check():
     return jsonify({'status': 'healthy'}), 200
 
+
+def handle_ip_query(ip, reader):
+    try:
+        response = reader.city(ip)
+        return jsonify(geoip_response_to_dict(response)), 200
+    except ValueError:
+        return jsonify({'error': f"{ip} is not a valid IP address"}), 400
+    except geoip2.errors.AddressNotFoundError:
+        return jsonify({'error': 'IP not in database'}), 404
+    except maxminddb.errors.InvalidDatabaseError:
+        reader.close()
+        reader = geoip2.database.Reader(f"{os.environ.get('APP_ROOT', './')}databases/GeoLite2-City.mmdb")
 
 def geoip_response_to_dict(response):
     city = response.city
@@ -64,5 +62,6 @@ def geoip_response_to_dict(response):
 
 
 if __name__ == '__main__':
+    reader = geoip2.database.Reader(f"{os.environ.get('APP_ROOT', './')}databases/GeoLite2-City.mmdb")
     app.run(host=os.environ.get('BIND_ADDRESS', '0.0.0.0'),
             threaded=True)

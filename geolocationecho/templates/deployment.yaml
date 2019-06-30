@@ -30,15 +30,22 @@ spec:
           env:
             - name: GEOIP_PRODUCT_IDS
               value: {{ .Values.geoip_account.product_ids }}
+            - name: INITIALIZE_ONLY
+              value: "true"
           envFrom:
             - secretRef:
                 name: geoip-account-secrets
           volumeMounts:
             - mountPath: /opt/geoip/databases
               name: geoip-database-volume
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
       volumes:
         - name: geoip-database-volume
-          emptyDir: {}
+          hostPath:
+            path: /tmp/shared
+            type: DirectoryOrCreate
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
