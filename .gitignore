@@ -314,3 +314,5 @@ GitHub.sublime-settings
 ### PuTTY template
 # Private key
 *.ppk
+
+*.mmdb
