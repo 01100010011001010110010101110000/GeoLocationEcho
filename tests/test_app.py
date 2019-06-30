@@ -12,6 +12,10 @@ class TestGeoLocationEcho(TestCase):
         response = self.reader.handle_ip_query('8.8.8.8')
         self.assertIsNotNone(response)
 
+    def test_handle_ip_query_ipv6(self):
+        response = self.reader.handle_ip_query('2001:4860:4860::8888')
+        self.assertIsNotNone(response)
+
     def test_handle_ip_query_empty(self):
         with self.assertRaises(TypeError):
             self.reader.handle_ip_query(None)
