@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/GeoLocationEcho.iml" filepath="$PROJECT_DIR$/.idea/GeoLocationEcho.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MaxMindPuller/.idea/MaxMindPuller.iml" filepath="$PROJECT_DIR$/../MaxMindPuller/.idea/MaxMindPuller.iml" />
+    </modules>
+  </component>
+</project>
