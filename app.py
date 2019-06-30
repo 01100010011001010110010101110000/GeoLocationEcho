@@ -15,7 +15,13 @@ from reader import GeoIPReader
 app = Flask(__name__)
 
 
-def process_request(ip):
+def process_request(ip: str) -> (any, int):
+    """
+    Accepts an IP address string and passes it to the `GeoIPReader` helper class
+    Returns meaningful errors on invalid or missing addresses and database corruption
+    :param ip: An IP address as a string
+    :return: The HTTP response containing the IP address details or an error
+    """
     try:
         reader = get_database_reader()
         response = reader.handle_ip_query(ip)
