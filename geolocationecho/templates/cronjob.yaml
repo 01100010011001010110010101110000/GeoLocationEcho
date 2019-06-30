@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: {{ include "GeoLocationEcho.fullname" . }}-redeployer
 spec:
   schedule: "30 18 * * 2"
   jobTemplate:
