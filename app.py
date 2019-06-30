@@ -82,8 +82,10 @@ def get_database_reader():
 
 
 def refresh_reader():
-    g.geoip_reader.close()
-    g.geoip_reader = None
+    db = g.pop('geoip_reader', None)
+
+    if db is not None:
+        db.close()
     get_database_reader()
 
 
