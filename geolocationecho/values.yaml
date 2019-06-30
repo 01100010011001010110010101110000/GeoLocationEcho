@@ -17,6 +17,7 @@ redeployerImage:
   repository: utmachine/redeployer
   tag: latest
 
+loglevel: DEBUG
 
 geoip_config_file: "/opt/geoip/GeoIP.conf"
 geoip_account:
